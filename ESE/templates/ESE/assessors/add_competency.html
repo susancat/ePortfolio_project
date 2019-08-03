@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block body_block %}
+<div class="container"> 
+        <div align="center">
+            <form class="formcontainer" enctype="multipart/form-data" id="competency_form" method="POST" action="{% url 'add_competency' %}">
+                <h1>Add a new competency</h1>
+                <p style="text-align: center;">Please fill in this form to add a new competency.</p>
+                <hr>
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                    <div>
+                        {{ field.errors }}
+                        <strong>{{ field.help_text }}</strong>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <br>
+                <input class="btn btn-primary" type="submit" name="submit" value="Add Competency" />
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

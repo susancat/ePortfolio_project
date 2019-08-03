@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title_block %}
+    Feedback
+{% endblock %}
+{% block body_block %}
+<div class="container ">
+        <div class="row">
+        {% if feedback %}
+                {% for feedback in feedback %}
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div id="backButton">
+                                <button class="btn btn-primary" onclick="goBack()" class="previous">&laquo;Back to search results</a></button>
+                                <button class="btn btn-primary" onclick="generate()"><span class="glyphicon glyphicon-print"></span> Print Feedback</button>
+                        </div>
+                         <div>
+                                <h2>{{feedback.feedback_ID}}<h2>
+                            
+                        </div>
+                        
+                        <div class= "col-lg-4 col-md-4 col-sm-4" > 
+                                <div class="well" id="assignmentdetails">
+                                    <h4>Feedback to</h4>
+                                    {{feedback.owner}}
+                        </div>
+                        
+                        <div class="col-lg-4 col-md-4 col-sm-4"> 
+                                <div class="well" id="recipedetails">
+                                        <h4>Review</h4>
+                                        {{feedback.review_text}}
+                                </div>    
+                        </div>
+                      
+                </div>
+                        <div class = "col-lg-12 col-md-12 col-sm-12">
+                                <div class="well" >
+                                        <h4>module</h4>
+                                        {{feedback.module_ID }}
+                                </div>  
+                                <div class="well" >
+                                    <h4>assessor</h4>
+                                    {{assignment.assessor_ID}}
+                            </div> 
+                            <div class="well" >
+                                <h4>create time</h4>
+                                {{assignment.create_time}}
+                        </div>  
+                        <div class="well" >
+                            <h4>modify time</h4>
+                            {{assignment.modify_time}}
+                    </div>   
+                        </div>
+                </div>
+                {% endfor %}
+        {% else %}
+                <strong>No Feedback!</strong>
+        {% endif %}
+        </div>
+</div>
+
+{% endblock %}
