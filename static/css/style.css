@@ -1,0 +1,332 @@
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+    padding: 5px;
+    height: 60px;
+    background-color: #00394d;
+}
+#toastLogo {
+    height: 50px;
+    width: 50px;
+}
+#siteTitle {
+    font-size: 2em;
+    color: #f1f1f1;
+}
+.myAcc{
+    background-color: #00394d;
+}
+h1 {
+    text-align: center;
+}
+h2 {
+    margin-left: 15px;
+    font-weight: bold;
+}
+h4 {
+    font-weight: bold;
+}
+/* Add a gray background color and some padding to the footer */
+
+footer {
+    background-color: #00394d;
+    padding: 15px;
+    font-style: italic;
+    color: white
+}
+
+#myCarousel {
+    width: 100%;
+    height: 400px;
+}
+
+#carousel-pic {
+    width: 40%;
+    height: 400px;
+}
+#defaultcarousel-pic{
+    width: 100%;
+    height: 400px;
+}
+
+.carousel-inner > .item > img{
+    margin:auto;
+    }
+
+#mappic {
+    width: 90%;
+}
+#getStarted{
+    width: 90%;
+    height: 350px;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 100%;
+    right: 0;
+    background-color: #006699;
+    overflow: hidden;
+    width: 0;
+    height: 100%;
+    transition: .5s ease;
+}
+#recipeDes{
+    color: white;
+}
+
+#recipe:hover .overlay {
+    width: 100%;
+    left: 0;
+    padding: 15px;
+}
+
+#recipe {
+    margin: 15px;
+}
+
+
+#recipe-box {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    
+}
+
+#backButton {
+    float: right;
+    text-decoration: none;
+    padding: 8px 16px;
+    
+}
+
+.text {
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+}
+
+#recipeLabel {
+    color: #006699;
+    
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+    box-sizing: border-box
+}
+
+
+/* Full-width input fields */
+
+.formcontainer {
+    padding: 10px;
+    width: 50%;
+    margin-top: 7%;
+    margin-bottom: 5%;
+    background-color: white;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+
+
+.formcontainer input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+}
+
+.formcontainer input[type=text]:focus,
+input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+}
+
+
+/* Set a style for all buttons */
+
+.formcontainer button {
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+
+button:hover {
+    opacity: 1;
+}
+
+
+/* Extra styles for the cancel button */
+
+.cancelbtn {
+    background-color: #f44336;
+}
+
+
+/* Float cancel and signup buttons and add an equal width */
+
+.cancelbtn,
+.signupbtn {
+    float: left;
+    color: white;
+}
+
+.signupbtn {
+    background-color: #4CAF50;
+}
+
+
+/* Clear floats */
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+
+/* The popup form - hidden by default */
+
+.form-popup {
+    display: none;
+    position: fixed;
+    bottom: 150px;
+    right: 300px;
+    border: 3px solid #f1f1f1;
+    z-index: 9;
+}
+
+.form-container {
+    padding: 10px;
+    width: 100%;
+    background-color: white;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.form-container input[type=text],
+input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+}
+
+.form-container input[type=text]:focus,
+input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+
+/* Set a style for all buttons */
+
+.form-container button {
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    opacity: 0.9;
+}
+
+#about-pic {
+    width: 190px;
+    height: 190px;
+}
+
+.page-header {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 70px;
+}
+#recipedetails{
+    width: 100%;
+    height: 550px;
+}
+#searchdetails{
+    width: 100%;
+    height:300px ;
+}
+#searchBar{
+    width: 100%;
+    height:500px ; 
+}
+#st{
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 50%;
+    opacity: 0.9; 
+}
+.myAlert-top{
+    position: fixed;
+    top: 80px; 
+    left:10%;
+    width: 80%;
+}
+
+#search {
+    margin: 25px;
+}
+
+#noneFound{
+    margin-top: 25px;
+    color: red;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropup .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+#dropdown-toggle{
+    background-color: inherit;
+
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+    width: 500px;
+  }

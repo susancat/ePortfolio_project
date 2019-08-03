@@ -69,7 +69,7 @@
                 
             <li class="col-6 text-right">
               {% if user.is_authenticated %}
-                <p class="pt-3">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}">Log out</a>.</p>
+                <p class="pt-3" style="color:white;">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}" >Log out</a>.</p>
               {% else %}
                 <li><a href="{% url 'login' %}" class="btn btn-primary" role="button">Log in</a></li>
                 <li><a href="{% url 'signup' %}" class="btn btn-primary" role="button">Sign up</a></li>

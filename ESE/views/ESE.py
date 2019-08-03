@@ -48,7 +48,8 @@ def home(request):
         if request.user.is_assessor:
             return redirect('home')
         else:
-            return redirect('students:assignment_list')
+            #return redirect('students:assignment_list')
+            return redirect('about')
     return render(request, 'ESE/home.html')
 
 def about(request):
