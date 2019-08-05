@@ -2,207 +2,113 @@
     {% load staticfiles %} 
 
       {% block body_block %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
-    <script src="{% static "js/dashboard.js" %}"></script>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
+      <script src="{% static 'js/dashboard.js' %}"></script>
             <div class="wrapper">
   <h1>Personal Dashboard</h1>
   <div class="inner-container">
     <div class="grid-wrapper">
       <div class="grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
             <i class="fa fa-user" aria-hidden="true"></i>
           </div>
           <div class="label">
-            Profile
+            <p style = "color: grey;">Profile</p>
+            <h4 style = "color: grey;">Your profile info shown here!</h4>
           </div>
         </div>
-        <div class="grid-overlay">
-          <div class="overlay-content-wrapper">
-
-            <div class="overlay-header">
-              Profile info
-            </div>
-            <div class="overlay-label">
-              Your profile info shown here!
-            </div>
-          </div>
-
-        </div>
-
-      </div>
+       </div>
       <div class="grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
             <i class="fa fa-file" aria-hidden="true"></i>
 
           </div>
           <div class="label">
-            View Assignments
-          </div>
-        </div>
-        <div class="grid-overlay">
-          <div class="overlay-content-wrapper">
-
-            <div class="overlay-header">
-              Assignment List
-            </div>
-            <div class="overlay-label">
-              All assignments submitted for your assessment listed here! 
-            </div>
+              <p style = "color: grey;">Assignments</p>
+              <h4 style = "color: grey;">All assignments submitted to you. </h4>
           </div>
         </div>
       </div>
       <div class="grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-
           </div>
           <div class="label">
-            Create Competency
+              <p style = "color: grey;">Create</p>
+              <h4 style = "color: grey;">Click to create a new competency to library!</h4>
           </div>
         </div>
-        <div class="grid-overlay">
-          <div class="overlay-content-wrapper">
-
-            <div class="overlay-header">
-              Create a New Competency
-            </div>
-            <div class="overlay-label">
-              Click to create a new competency to competency library!
-            </div>
-          </div>
-        </div>
-      </div>
+       </div>
       <div class="grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
-
           </div>
           <div class="label">
-            History
-          </div>
-        </div>
-        <div class="grid-overlay">
-          <div class="overlay-content-wrapper">
-
-            <div class="overlay-header">
-              Your last worked on
-            </div>
-            <div class="overlay-label">
-              <p> Comments on John Snow's HCI Reflection</p>
-              <P> Comments on John Snow's ECS Essay</p>
-              <p> more...</p>
-            </div>
+              <p style = "color: grey;">History</p>
+              <h4 style = "color: grey;">Your last worked on...</h4>
           </div>
         </div>
       </div>
       <div class="grid user-grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-
-
           </div>
           <div class="label">
-            {{user.username}}
+              <p style = "color: grey;"> {{user.username}}</p>
+              <h4 style = "color: grey;">Welcome!</h4>
           </div>
         </div>
       </div>
       <div class="grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
             <i class="fa fa-users" aria-hidden="true"></i>
-
           </div>
           <div class="label">
-            Groups
-          </div>
-        </div>
-        <div class="grid-overlay">
-          <div class="overlay-content-wrapper">
-
-            <div class="overlay-header">
-              Groups
-            </div>
-            <div class="overlay-label">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quos iure autem sapiente quod adipisci illum in, praesentium sunt beatae quo at id officiis accusamus saepe fugit dicta nihil omnis. Expedita!
-            </div>
+              <p style = "color: grey;">Groups</p>
+              <h4 style = "color: grey;">View groups you own membership.</h4>
           </div>
         </div>
       </div>
       <div class="grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
             <i class="fa fa-upload" aria-hidden="true"></i>
-
           </div>
           <div class="label">
-            Upload
+              <p style = "color: grey;">Upload</p>
+              <h4 style = "color: grey;">Upload files for feedback.</h4>
           </div>
         </div>
-        <div class="grid-overlay">
-          <div class="overlay-content-wrapper">
-
-            <div class="overlay-header">
-              Upload a File
-            </div>
-            <div class="overlay-label">
-              Upload files as evidence for work-based learning.
-            </div>
-          </div>
         </div>
-      </div>
       <div class="grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
             <i class="fa fa-calendar" aria-hidden="true"></i>
-
           </div>
           <div class="label">
-            Deadlines
+              <p style = "color: grey;">Deadlines</p>
+              <h4 style = "color: grey;">Notification of coming deadlines.</h4>
           </div>
         </div>
-        <div class="grid-overlay">
-          <div class="overlay-content-wrapper">
-
-            <div class="overlay-header">
-             Deadline Notification
-            </div>
-            <div class="overlay-label">
-              Notification of feedbacks needed to be completed in coming deadlines.
-            </div>
-          </div>
         </div>
-      </div>
       <div class="grid">
         <div class="grid-header">
-          <div class="icon">
+          <div class="icon" style = "font-size: 60px">
             <i class="fa fa-folder" aria-hidden="true"></i>
-
           </div>
           <div class="label">
-            Record
+              <p style = "color: grey;">Record</p>
+              <h4 style = "color: grey;">View student's Competency Rating Record.</h4>
           </div>
         </div>
-        <div class="grid-overlay">
-          <div class="overlay-content-wrapper">
-
-            <div class="overlay-header">
-              View Competency Rating Record
-            </div>
-            <div class="overlay-label">
-              View the record for student you searched for their ratings on competencies here.
-            </div>
-          </div>
         </div>
-      </div>
-
     </div>
-
   </div>
-  
 </div>
     {% endblock %}

@@ -89,11 +89,12 @@ h1 {
 
   .icon {
     color: #333;
-    font-size: 50px;
+    margin-top: 5px;
+    font-size: 60px;
   }
 
   .label {
-    color: $primary;
+    color: grey;
     margin-top: 10px;
   }
 }
