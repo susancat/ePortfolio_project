@@ -23,13 +23,12 @@ class StudentSignUpForm(UserCreationForm):
 	class Meta(UserCreationForm.Meta):
 		model = User
 
-	@transaction.atomic
-	def save(self):
+	#@transaction.atomic
+	def save(self, commit=True):
 		user = super().save(commit=False)
 		user.is_student = True
-		user.save()
-		student = Student.objects.create(user=user)
-		#student.interests.add(*self.cleaned_data.get('interests'))
+		if commit:
+			user.save()
 		return user
 
 class StudentForm(forms.ModelForm):

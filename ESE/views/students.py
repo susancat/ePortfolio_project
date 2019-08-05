@@ -25,8 +25,11 @@ class StudentSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('home.html')
+        return redirect('home')
 
+def student_dashboard(request):
+    response = render (request, 'ESE/students/student_dashboard.html')
+    return response
 
 @method_decorator([login_required, student_required], name='dispatch')
 def add_assignment(request):

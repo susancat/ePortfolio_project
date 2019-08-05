@@ -27,9 +27,12 @@ class AssessorSignUpView(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
-        return redirect('home.html')
+        return redirect('home')
         #return redirect('teachers:quiz_change_list')
 
+def assessor_dashboard(request):
+    response = render (request, 'ESE/assessors/assessor_dashboard.html')
+    return response
 
 @method_decorator([login_required, assessor_required], name='dispatch')
 def add_feedback(request):

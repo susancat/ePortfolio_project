@@ -29,6 +29,7 @@ def signin(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
+        
         if user:
             if user.is_active:
                 login(request, user)
@@ -39,17 +40,16 @@ def signin(request):
         else:
             messages.error(request,'Invalid login details supplied. Please check your username and password!')
         return HttpResponseRedirect(reverse('signin'))
-
+        
     else:
         return render(request, 'ESE/registration/login.html', {})
 
 def home(request):
     if request.user.is_authenticated:
         if request.user.is_assessor:
-            return redirect('home')
+            return render(request, 'ESE/assessors/assessor_dashboard.html')
         else:
-            #return redirect('students:assignment_list')
-            return redirect('about')
+            return render(request,'ESE/students/student_dashboard.html')
     return render(request, 'ESE/home.html')
 
 def about(request):
