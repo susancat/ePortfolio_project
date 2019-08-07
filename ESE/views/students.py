@@ -31,7 +31,9 @@ def student_dashboard(request):
     response = render (request, 'ESE/students/student_dashboard.html')
     return response
 
-@method_decorator([login_required, student_required], name='dispatch')
+
+@login_required
+@student_required
 def add_assignment(request):
     form = AssignmentForm()
     if request.method == 'POST':

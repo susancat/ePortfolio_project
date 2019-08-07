@@ -1,11 +1,9 @@
 {% extends 'base.html' %} 
     {% load staticfiles %} 
-
-    {% block title_block %}
-        Create New Assignment
-    {% endblock %}
+    {% load crispy_forms_tags %}
 
     {% block body_block %}
+    <h1>Create New Assignment</h1>
     <div class="container"> 
             <div align="center">
                 <form class="formcontainer" enctype="multipart/form-data" id="assignment_form" method="POST" action="{% url 'add_assignment' %}">
@@ -17,6 +15,7 @@
                         {{ hidden }}
                     {% endfor %}
                     {% for field in form.visible_fields %}
+                    {{ form|crispy }}
                         <div>
                             {{ field.errors }}
                             <strong>{{ field.help_text }}</strong>

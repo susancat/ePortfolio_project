@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 from django.forms.utils import ValidationError
 
-from ESE.models import Subject, Student, Assessor, Assignment, Feedback, Competency, Module, Student_comp, User, Profile
+from ESE.models import Student, Assessor, Assignment, Feedback, Competency, Module, Student_comp, User, Profile
 
 
 class AssessorSignUpForm(UserCreationForm):
@@ -33,8 +33,7 @@ class StudentSignUpForm(UserCreationForm):
 
 class StudentForm(forms.ModelForm):
 	SID = forms.CharField(max_length=128, help_text="Please enter the student ID.")
-	first_name = forms.CharField(max_length=128, help_text="Please enter the student's first name'.")
-	surname = forms.CharField(max_length=128, help_text="Please enter the student's surname.")
+	stu_name = forms.CharField(max_length=128, help_text="Please enter the student's name'.")
 	major = forms.CharField(max_length=128, help_text="Please enter the student's major.")
 	enroll_year = forms.CharField(max_length=128, help_text="Please enter the student's year of enrollment.")
 	graduate_year = forms.CharField(max_length=128, help_text="Please enter the student's year of graduation.")
@@ -42,11 +41,11 @@ class StudentForm(forms.ModelForm):
 
 	class Meta:
 		model = Student
-		fields = ('SID','first_name','surname','major','enroll_year','graduate_year',)
+		fields = ('SID','stu_name','major','enroll_year','graduate_year',)
 
 class ModuleForm(forms.ModelForm):
 	module_ID = forms.CharField(max_length=128, help_text="Please enter the module ID.")
-	name = forms.CharField(max_length=128, help_text="Please enter the module's name'.")
+	mod_name = forms.CharField(max_length=128, help_text="Please enter the module's name'.")
 	#SID = forms.ModelChoiceField(queryset=Student.objects.all(), empty_label="Student ID")
 	SID = forms.CharField(max_length=128,help_text="Please enter the student ID.")
 	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -57,8 +56,7 @@ class ModuleForm(forms.ModelForm):
 
 class AssessorForm(forms.ModelForm):
 	assessor_ID = forms.CharField(max_length=128, help_text="Please enter the assessor ID.")
-	first_name = forms.CharField(max_length=128, help_text="Please enter the assessor's first name'.")
-	surname = forms.CharField(max_length=128, help_text="Please enter the assessor's surname.")
+	ass_name = forms.CharField(max_length=128, help_text="Please enter the assessor's name'.")
 	module_ID = forms.CharField(max_length=128, help_text="Please enter the module ID.")
 	user_group = forms.CharField(max_length=128, help_text="Please enter the user group of assessor.")
 	institution = forms.CharField(max_length=128, help_text="Please enter the assessor's institution.")
@@ -110,7 +108,7 @@ class FeedbackForm(forms.ModelForm):
 
 class CompetencyForm(forms.ModelForm):
 	competency_ID = forms.CharField(max_length=128, help_text="Please enter the competency ID.")
-	name = forms.CharField(max_length=128, help_text="Please enter the name of the competency.")
+	com_name = forms.CharField(max_length=128, help_text="Please enter the name of the competency.")
 	group_ID = forms.CharField(max_length=128, help_text="Please enter the group ID of the competency.")
 	group_name = forms.CharField(max_length=128, help_text="Please enter the group name of the competency.")
 	dimension_ID = forms.CharField(max_length=128, help_text="Please enter the dimension ID of the competency.")
@@ -138,7 +136,7 @@ class Student_compForm(forms.ModelForm):
 		exclude = ('slug', 'student_slug',)
 
 class ContactForm(forms.Form):
-	name = forms.CharField(max_length=100)
+	con_name = forms.CharField(max_length=100)
 	email = forms.EmailField()
 	message = forms.CharField(widget=forms.Textarea)
 

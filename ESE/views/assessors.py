@@ -58,4 +58,4 @@ def add_competency(request):
             return render (request,'home.html')
         else:
             print(form.errors)
-    return render(request, 'ESE/add_competency.html', {'form': form})
+    return render(request, 'ESE/assessors/add_competency.html', {'form': form})

@@ -169,7 +169,7 @@ def show_student (request, student_surname_slug):
     context_dict = {}
 
     try:
-        student = Student.objects.get(slug = student_surname_slug)
+        student = Student.objects.get(slug = student_name_slug)
         student_comp = Student_comp.objects.filter(student = student)
         context_dict['student_comps'] = student_comp
         context_dict['student'] = student
@@ -185,7 +185,7 @@ def show_assessor (request, assessor_surname_slug):
     context_dict = {}
 
     try:
-        assessor = Assessor.objects.get(slug = assessor_surname_slug)
+        assessor = Assessor.objects.get(slug = assessor_name_slug)
         context_dict['assessor'] = assessor
     
     except Assessor.DoesNotExist:
@@ -235,21 +235,6 @@ def show_assignment (request, assignment_ID_slug):
 
     return render(request, 'ESE/show_assignment.html', context_dict)
 
-'''
-@method_decorator([login_required], name='dispatch')
-class StudentInterestsView(UpdateView):
-    model = Student
-    form_class = StudentInterestsForm
-    template_name = 'classroom/students/interests_form.html'
-    success_url = reverse_lazy('students:quiz_list')
-
-    def get_object(self):
-        return self.request.user.student
-
-    def form_valid(self, form):
-        messages.success(self.request, 'Interests updated with success!')
-        return super().form_valid(form)
-'''
 def show_feedback (request, assignment_ID_slug, feedback_ID_slug):
     context_dict = {}
 

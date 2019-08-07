@@ -3,27 +3,27 @@ from ESE.models import Student, Assessor, Assignment, Feedback, Competency, Modu
 
 class StudentAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('SID',)}
-    list_display = ('surname', 'first_name', 'SID', 'major', 'enroll_year', 'graduate_year' )
+    list_display = ('stu_name', 'SID', 'major', 'enroll_year', 'graduate_year' )
 
 class AssessorAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('assessor_ID',)}
-    list_display = ('surname', 'first_name', 'assessor_ID', 'user_group', 'institution' )
+    list_display = ('ass_name', 'assessor_ID', 'user_group', 'institution' )
 
 class AssignmentAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('assignment_ID',), 'student_slug': ('SID',)} 
-    list_display = ('title', 'assignment_ID', 'SID', 'assessor_ID', 'description')
+    list_display = ('owner','SID','title','assignment_ID', 'module_ID', 'description','text')
 
 class FeedbackAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('feedback_ID',), 'assignment_slug': ('assignment_ID',),'assessor_slug': ('assessor_ID',)}
     list_display = ('feedback_ID', 'assessor_ID', 'review_text')
 
 class ModuleAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',)}
-    list_display = ('module_ID', 'name', 'SID')
+    prepopulated_fields = {'slug': ('mod_name',)}
+    list_display = ('module_ID', 'mod_name', 'SID')
 
 class CompetencyAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',)}
-    list_display = ('group_name','dimension_name', 'name', 'description')
+    prepopulated_fields = {'slug': ('com_name',)}
+    list_display = ('group_name','dimension_name', 'com_name', 'description')
 
 class StudentcompAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',), 'student_slug': ('SID',)} 

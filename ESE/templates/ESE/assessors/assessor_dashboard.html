@@ -2,6 +2,11 @@
     {% load staticfiles %} 
 
       {% block body_block %}
+      <style>
+          a:hover {
+            color: blue;
+          }
+          </style>
       <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
       <script src="{% static 'js/dashboard.js' %}"></script>
             <div class="wrapper">
@@ -37,7 +42,7 @@
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
           </div>
           <div class="label">
-              <p style = "color: grey;">Create</p>
+              <a style = "color: grey;" onclick="location.href='ESE/assessors/add_competency.html'">Create</a>
               <h4 style = "color: grey;">Click to create a new competency to library!</h4>
           </div>
         </div>
