@@ -1,0 +1,86 @@
+{% extends 'base_generic.html' %} {% block content %}
+<div class="container">
+    <form method="post">{% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-xs-12">
+                <div class="card-box">
+                    <h6>Add Competency</h6>
+                    <div class="form-group">
+                        <span class="faded">Competency name</span> {{ form.name }}
+                    </div>
+                    <div class="form-group">
+                        <span class="faded">Summary</span> {{ form.description }}
+                    </div>
+                    <div class="form-group">
+                        <span class="faded">Group</span> {{ form.group_name }}
+                    </div>
+                    <div class="form-group">
+                        <span class="faded">Dimension</span> {{ form.dimension_name }}
+                    </div>
+                </div>
+                
+                <div class="empty-box">
+                    <input type="submit" name="submit" class="btn btn-primary" value="save" />
+                    <input type="submit" name="submit" class="btn btn-primary" value="add new"/>
+                    <a href="#" class="no-float btn btn-danger">cancel</a>
+                </div>
+            </div>
+            {% url 'competency_add' pk=module as add_competency %}
+            <div class="col-md-4 col-xs-12">
+                {% if request.path == add_competency %}
+                <div class="card-box">
+                    <h6>Assessor</h6>
+                    <div id="msg" role="alert">
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <select id="user_1" name="user_1" class="form-control">
+                                <option value="0">None</option>
+                                {% for u in users %}
+                                <option value="{{ u.pk }}">{{ u }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <small class="faded">You can add more assessors later</small>
+                    </form>
+                </div>
+                {% endif %}
+                <div class="card-box">
+                    <h6>Module</h6>
+                    <div class="form-group">
+                        {{ form.module }}
+                    </div>
+                    <div class="card-box">
+                    <h6>Date</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <span class="faded">Start</span> {{ form.start_date }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <span class="faded">End</span> {{ form.end_date }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    <div class="form-group">
+                        <span class="faded">Level</span> {{ form.level }}
+                    </div>
+                    <div class="form-group">
+                        <span class="faded">Year</span> {{ form.year }}
+                    </div>
+                    <div class="form-group">
+                        <span class="faded">Semester</span> {{ form.semester }}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %} {% block javascript %} {% load static %}
+<script src="{% static 'js/ajax.js' %}"></script>
+{% endblock %}

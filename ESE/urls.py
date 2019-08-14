@@ -1,0 +1,33 @@
+from django.urls import include, path, re_path
+from . import views
+
+urlpatterns = [
+    path('students/', views.students_view, name='students'),
+    path('profile/<int:pk>', views.student_detail, name='student_detail'),
+    path('user/delete/<int:pk>', views.user_delete, name='user_delete'),
+    path('modules/', views.modules_view, name='modules'),
+    path('modules/add/', views.module_add, name='module_add'),
+    path('modules/edit/<int:pk>', views.module_edit, name='module_edit'),
+    path('modules/delete/<int:pk>', views.module_delete, name='module_delete'),
+    path('modules/<int:pk>/competency/add/', views.competency_add, name='competency_add'),
+    path('modules/<int:p_pk>/competency/delete/<int:pk>', views.competency_delete, name='competency_delete'),
+    path('modules/competency/<int:pk>/edit/', views.competency_edit, name='competency_edit'),
+    path('modules/competency/<int:pk>', views.competency_detail, name='competency_detail'),
+    path('module/<int:pk>', views.module_detail, name='module_detail'),
+    path('module/competency/<int:competency_id>/upload/', views.handle_file_upload, name='upload_file_view'),
+    path('module/competency/<int:competency_id>/edit/<int:file_id>', views.handle_file_edit, name='upload_file_edit'),
+    path('module/competency/<int:competency_id>/delete/<int:file_id>', views.handle_file_delete, name='upload_file_delete'),
+    path('students/add/', views.user_add, name='user_add'),
+    path('profile/edit/<int:pk>', views.user_edit, name='user_edit'),
+    path('competency/<int:competency_id>/assessor/edit/', views.select_assessor, name='add_assessor'),
+    path('competency/<int:competency_id>/assessor/confirm/<int:student_id>', views.confirm_select_assessor, name='confirm_assessor'),
+    path('competency/<int:competency_id>/assessor/delete/<int:student_id>', views.confirm_delete_assessor, name='delete_assessor'),
+    path('ajax/filter_competency/', views.filter_competencies_view, name='filter_views'),
+    path('post/<int:pk>', views.post_single, name='post_single'),
+    path('post/add/', views.post_add, name='post_add'),
+    path('post/edit/<int:pk>', views.post_edit, name='post_edit'),
+    path('post/delete/<int:pk>', views.post_delete, name='post_delete'),
+    path('competency/<int:competency_id>/ratings/', views.rating_students, name='rating_students'),
+    path('posts/', views.post_list, name='post_list'),
+    re_path(r'^$', views.home_view, name='home'),
+]

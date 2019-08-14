@@ -1,0 +1,144 @@
+{% extends 'base_generic.html' %}
+
+
+{% block content %}
+
+{% if user.is_superuser or user.student == student %}
+<div class="abs-popup">
+    <div class="no-shade card-box grades">
+        <!-- <h5>Success</h5><br/> -->
+        <a onclick="toggleRatings()" class="toggleBtn btn btn-danger"><i class="fas fa-times"></i> Close</a><br><br>
+        <table>
+            <thead>
+                <th>Competency</th>
+                <th>Rating</th>
+            </thead>
+            <tbody>
+                {% if success %}
+                {% for rating in success %}
+                <tr>
+                    <td>{{ rating.competency }}</td>
+                    <td>{% if rating.rating >= 2 %}{{ rating.rating }}{% else %}&mdash;{% endif %}</td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                    <td>Empty dataset</td>
+                    <td></td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table><br>
+    </div>
+</div>
+{% endif %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="no-shade card-box">
+                <div class="row">
+                    <div class="col-md-3 col-xs-12 text-center">
+                        <div class="thumb img-round">
+                            <img src="../static/uploads/{% if student.picture %}{{ student.picture }} {% else %}no-img.png {% endif %}" />
+                        </div>
+                        {% if user.is_authenticated %}
+                        {% if user.student.pk == student.pk or user.is_superuser %}
+                        <div class="text-left">
+                            <br/>
+                            <a class="btn btn-primary" style="display: block" href="{% url 'user_edit' pk=student.pk %}"><i class="material-icons">edit</i>Edit</a><br/>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="col-md-9 col-xs-12">
+                        <h3>{{ student.first_name }} {{ student.last_name }}</h3>
+                        <small class="faded lead">
+                            {{ student.get_level_display }} &mdash; {{ student.major }}</a>
+                        </small>
+                        <hr/>
+                        <div><span class="sm-label label text-primary"><i class="fas fa-map-marker"></i></span> {{ student.city }}, {{ student.country }}</div><br/>
+                        <div><span class="sm-label label text-primary"><i class="fas fa-envelope"></i></span> {{ student.email }}</div>
+                        
+                        <hr/>
+                        <h5>Enrolled Modules</h5>
+                        <a href="{% url 'module_detail' pk=student.module.pk %}" class="text-primary">{{ student.module }}</a>
+                        <h5>Competency Ratings</h5>
+                        {% if student.competency.all %}
+                            {% if student.competency.all|length > 8 %}
+                            <div class="hide">
+                                <div class="white-shadow">
+                                    <div onclick="showCompetencies(this)" id="trigger">Expand <i class="fas fa-angle-down"></i></div>
+                                </div>
+                            {% endif %}
+                                {% for competency in student.competency.all %}
+                                <a class="label" href="{% url 'competency_detail' pk=competency.pk %}" title="{{ competency.description }}">{{ competency }}</a>
+                                {% endfor %}
+                            {% if student.competency.all|length > 8 %}
+                            </div>
+                            {% endif %}
+                            {% else %}
+                        <b class="text-danger">No competencies</b>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <div class="card-box">
+                <h6>Overview</h6>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>The Sum of Rating</td>
+                            <td>{{ details.rating__sum|floatformat:0 }}</td>
+                        </tr>
+                        <tr>
+                            <td>Highest Rating</td>
+                            <td>{% if not details.rating__max %}&mdash;{% else %}{{ details.rating__max }}{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Lowest Rating</td>
+                            <td>{% if not details.rating__min %}&mdash;{% else %}{{ details.rating__min }}{% endif %}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    var visible = false;
+    var collapsed = true;
+
+    function toggleGrades() {
+        if (visible) {
+            $('.abs-popup').hide()
+        } else {
+            $('.abs-popup').show();
+            $('.abs-popup').css('display', 'flex');
+        }
+        visible = !visible;
+    }
+
+    function showCourses(btn) {
+        var btn = $(btn);
+
+        if (collapsed) {
+            btn.html("Collapse <i class=\"fas fa-angle-up\"></i>");
+            $(".hide").css("max-height", "unset");
+            $(".white-shadow").css({"background": "unset", "z-index": "0"});
+        } else {
+            btn.html("Expand <i class=\"fas fa-angle-down\"></i>");
+            $(".hide").css("max-height", "150");
+            $(".white-shadow").css({"background": "linear-gradient(transparent 50%, rgba(255,255,255,.8) 80%)", "z-index": "2"});
+        }
+        collapsed = !collapsed;
+    }
+</script>
+{% endblock %}
