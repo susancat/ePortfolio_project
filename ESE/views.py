@@ -62,7 +62,7 @@ def modules_view(request):
 
 def module_add(request):
     if request.method == 'POST':
-        form = ModuleAddForm(request.POST)
+        form = ModuleForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('modules')

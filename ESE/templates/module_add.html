@@ -1,28 +1,67 @@
-{% extends 'base_generic.html' %}
-
-
-{% block content %}
+ 
+{% extends 'base_generic.html' %} {% block content %}
 <div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-8 col-xs-12">
-			<form method="post">
-				<div class="card-box">
-					{% csrf_token %}
-					<h6>Add Module</h6>
-					<div class="form-group">
-						Module name<br>
-						{{ form.name }}
-					</div>
-					<div class="form-group">
-						Summary<br>
-						{{ form.summary }}
-					</div>
-				</div>
-				<div class="empty-box">
-					<button class="btn btn-primary" type="submit">Save Module</button>
-				</div>
-			</form>
-		</div>
-	</div>
+    <form method="post">{% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-xs-12">
+                <div class="card-box">
+                    <h6>Add Module</h6>
+                    <div class="form-group">
+                        <span class="faded">Module name</span> {{ form.name }}
+                    </div>
+                    <div class="form-group">
+                        <span class="faded">Summary</span> {{ form.summary }}
+                    </div>
+                    
+                </div>
+                <div class="card-box">
+                    <h6>Date</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <span class="faded">Start</span> {{ form.start_date }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <span class="faded">End</span> {{ form.end_date }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="empty-box">
+                    <input type="submit" name="submit" class="btn btn-primary" value="Save" />
+                    <input type="submit" name="submit" class="btn btn-primary" value="Add to New"/>
+                    <a href="#" class="no-float btn btn-danger">Cancel</a>
+                </div>
+            </div>
+            {% url 'module_add' pk=module as add_module %}
+            <div class="col-md-4 col-xs-12">
+                {% if request.path == add_module %}
+                <div class="card-box">
+                    <h6>Assessor</h6>
+                    <div id="msg" role="alert">
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <select id="user_1" name="user_1" class="form-control">
+                                <option value="0">None</option>
+                                {% for u in users %}
+                                <option value="{{ u.pk }}">{{ u }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <small class="faded">You can add more assessor later</small>
+                    </form>
+                </div>
+                {% endif %}
+                
+                
+            </div>
+        </div>
+    </form>
 </div>
+{% endblock %} {% block javascript %} {% load static %}
+<script src="{% static 'js/ajax.js' %}"></script>
 {% endblock %}

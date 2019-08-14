@@ -62,7 +62,22 @@
                         
                         <hr/>
                         <h5>Enrolled Modules</h5>
-                        <a href="{% url 'module_detail' pk=student.module.pk %}" class="text-primary">{{ student.module }}</a>
+                        {% if student.module.all %}
+                            {% if student.module.all|length > 8 %}
+                            <div class="hide">
+                                <div class="white-shadow">
+                                    <div onclick="showModules(this)" id="trigger">Expand <i class="fas fa-angle-down"></i></div>
+                                </div>
+                            {% endif %}
+                                {% for module in student.module.all %}
+                                <a class="label" href="{% url 'module_detail' pk=module.pk %}" title="{{ module.summary }}">{{ module }}</a>
+                                {% endfor %}
+                            {% if student.module.all|length > 8 %}
+                            </div>
+                            {% endif %}
+                            {% else %}
+                        <b class="text-danger">No modules</b>
+                        {% endif %}
                         <h5>Competency Ratings</h5>
                         {% if student.competency.all %}
                             {% if student.competency.all|length > 8 %}
@@ -83,7 +98,11 @@
                     </div>
                 </div>
             </div>
-        
+            {% if user.is_superuser or user.student == student %}
+            <div class="empty-box text-left">
+                <a onclick="toggleRatings()" class="toggleBtn btn btn-primary">view the ratings</a>
+            </div>
+            {% endif %}
         </div>
         <div class="col-md-4 col-xs-12">
             <div class="card-box">
@@ -116,7 +135,7 @@
     var visible = false;
     var collapsed = true;
 
-    function toggleGrades() {
+    function toggleRatings() {
         if (visible) {
             $('.abs-popup').hide()
         } else {
@@ -126,7 +145,7 @@
         visible = !visible;
     }
 
-    function showCourses(btn) {
+    function showCompetencies(btn) {
         var btn = $(btn);
 
         if (collapsed) {

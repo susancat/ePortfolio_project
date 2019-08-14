@@ -99,7 +99,7 @@ class Student(models.Model):
     major = models.CharField(max_length=100, null=True)
     country = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
     city = models.CharField(max_length=100, null=True)
-    module = models.ForeignKey(Module, on_delete=models.SET_NULL, null=True)
+    module = models.ManyToManyField(Module, related_name='module', blank=True)
     assessor = models.ManyToManyField(Competency, related_name='assessor', blank=True)
     year = models.IntegerField(choices=YEARS, default=1)
     competency = models.ManyToManyField(Competency, related_name='competency', blank=True)
@@ -136,9 +136,9 @@ class New(models.Model):
 
 
 class Rating(models.Model):
-    student = models.ForeignKey(User, on_delete=models.CASCADE)
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
-    competency = models.ForeignKey(Competency, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE,blank=True, null=True)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE, blank=True, null=True)
+    competency = models.ForeignKey(Competency, on_delete=models.CASCADE,blank=True, null=True)
     rating = models.IntegerField(choices=RATING, default=0)
 
     def __str__(self):

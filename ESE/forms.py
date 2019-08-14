@@ -23,7 +23,7 @@ class UpdateProfile(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ('first_name', 'last_name', 'email', 'module', 'country', 'city','picture', 'user', )
+        fields = ('first_name', 'last_name', 'email', 'module', 'country', 'city','picture', 'user','major', 'competency',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -34,7 +34,8 @@ class UpdateProfile(forms.ModelForm):
         self.fields['country'].widget.attrs.update({'class': 'form-control'})
         self.fields['city'].widget.attrs.update({'class': 'form-control', 'placeholder': 'City'})
         self.fields['module'].widget.attrs.update({'class': 'form-control'})
-        #self.fields['competency'].widget.attrs.update({'class': 'full-width', 'hidden': True, 'required': False})
+        self.fields['major'].widget.attrs.update({'class': 'form-control'})
+        self.fields['competency'].widget.attrs.update({'class': 'full-width', 'required': False})
 
 
 # Sign up form
