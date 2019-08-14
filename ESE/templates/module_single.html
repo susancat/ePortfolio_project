@@ -1,0 +1,71 @@
+{% extends 'base_generic.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="no-shade card-box">
+        <h4>{{ module.name }}</h4>
+        {% if module.summary %}
+        <p>{{ module.summary }}</p>
+        {% endif %}
+    </div>
+    <div class="shadow-box">
+        {% if competencies %}
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Competency name</th>
+                    <th class="text-right">Edit</th>
+                    <th></th>
+                </tr>
+            </thead>
+        {% for competency in competencies %}
+            <tr>
+                <td style="max-width: 20px"><b>{{ competency.get_type }}</b></td>
+                <td><a href="{% url 'competency_detail' pk=competency.pk %}">{{ competency }}</a></td>
+                <!--td class="text-right"><b>{{ competency.ratings }}</b></td-->
+                {% if user.is_superuser %}
+                    <td style="max-width: 50px" class="text-right">
+                        <a title="Edit" href="{% url 'competency_edit' pk=competency.pk %}" class="label sm-label"><i class="fas fa-pencil-alt"></i></a>
+                        <span class="with-popup">
+                            <div class="popup p-delete">
+                                <p>Are you sure you want to remove this competency?</p>
+                                <a href="{% url 'competency_delete' p_pk=module.pk pk=competency.pk %}">Delete</a>
+                            </div>
+                            <a title="Delete" class="label sm-label"><i class="fas fa-times"></i></a>
+                        </span>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </table>
+        {% else %}
+        <p class="text-center"><i class="material-icons">sentiment_dissatisfied</i><br/>No competencies added</p>
+        {% if user.is_superuser %}
+        <p class="text-center lead">Start by <a href="{% url 'competency_add' pk=module.pk %}">adding new competency</a></p>
+        {% endif %}
+        {% endif %}
+
+        {% if competencies.paginator.page_range|length > 1 %}
+        <br>
+        <div class="pagination">
+            <a href="?page=1">&laquo;</a>
+            {% for i in competencies.paginator.page_range %}
+                {% if i == competencies.number %}
+                    <a href="?page={{ i }}"><b>{{ i }}</b></a>
+                {% else %}
+                    <a href="?page={{ i }}">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+            <a href="?page={{ competencies.paginator.num_pages }}">&raquo;</a>
+        </div>
+        {% endif %}
+    </div>
+    {% if user.is_authenticated and user.is_superuser and competencies %}
+    <div class="empty-box">
+        <a class="btn btn-primary" href="{% url 'competency_add' pk=module.pk %}">Add competency</a>
+    </div>
+    <!-- <i class="material-icons">add</i>  -->
+    {% endif %}
+</div>
+{% endblock %}

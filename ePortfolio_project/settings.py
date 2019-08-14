@@ -33,18 +33,13 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'ESE.apps.EseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.humanize',
-    'django_fields',
-    
-    'crispy_forms',
-    # 'haystack',
-    'ESE',
 ]
 
 MIDDLEWARE = [
@@ -89,19 +84,11 @@ DATABASES = {
     }
 }
 
-'''
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(os.path.dirname(__file__), 'woosh_index')
-    }
-}
-'''
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
-'''
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -116,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-'''
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -137,19 +124,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_USER_MODEL = 'ESE.User'
+MEDIA_ROOT = BASE_DIR + '/ESE/static/uploads'
+MEDIA_URL = '/media/'
 
-LOGIN_URL = 'login'
+#AUTH_USER_MODEL = 'ESE.User'
 
-LOGOUT_URL = 'logout'
-
-LOGIN_REDIRECT_URL = 'home'
-
-LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+SIGNUP_FORM_CLASS = 'seme.forms.SignUpForm'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_IMAGE_PATH = 'default.png'
-
+'''
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-secondary',
     messages.INFO: 'alert-info',
@@ -162,3 +148,4 @@ MESSAGE_TAGS = {
 # Third party apps configuration
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+'''

@@ -1,0 +1,42 @@
+{% extends 'base_generic.html' %} {% block content %}
+<div class="container">
+    <div class="shadow-box">
+        {% if modules %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Module name</th>
+                    {% if user.is_superuser %}
+                    <th></th>
+                    {% endif %}
+                </tr>
+            </thead>
+            {% for m in modules %}
+            <tr>
+                <td><a href="{% url 'module_detail' pk=m.pk %}">{{ m }}</a></td>
+                {% if user.is_superuser %}
+                <td class="text-right">
+                    <a title="Edit" href="{% url 'module_edit' pk=m.pk %}" class="label sm-label"><i class="fas fa-pencil-alt"></i></a>
+                    <span class="with-popup">
+                        <div class="popup p-delete">
+                            <p>Are you sure you want to remove this module?</p>
+                            <a href="{% url 'module_delete' pk=m.pk %}">Remove</a>
+                        </div>
+                        <a title="Delete" class="label sm-label"><i class="fas fa-times"></i></a>
+                    </span>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>There are no modules available</p>
+        {% endif %}
+    </div>
+    {% if user.is_superuser %}
+    <div class="empty-box">
+        <a href="{% url 'module_add' %}" class="btn btn-primary">Add New Module</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

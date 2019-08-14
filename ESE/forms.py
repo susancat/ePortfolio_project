@@ -1,156 +1,146 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.db import transaction
-from django.forms.utils import ValidationError
+from .models import Upload, Student, New, Rating, Module, Competency
+from django.contrib.auth.models import User
+from django.forms import CharField
 
-from ESE.models import Student, Assessor, Assignment, Feedback, Competency, Module, Student_comp, User, Profile
+# Upload files to specific course
+class UploadFormFile(forms.ModelForm):
+    class Meta:
+        model = Upload
+        fields = ('name', 'file', 'competency', )
 
-
-class AssessorSignUpForm(UserCreationForm):
-	class Meta(UserCreationForm.Meta):
-		model = User
-
-	def save(self, commit=True):
-		user = super().save(commit=False)
-		user.is_assessor = True
-		if commit:
-			user.save()
-		return user
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'form-control'})
 
 
-class StudentSignUpForm(UserCreationForm):
+# Add/Edit User profile
+class UpdateProfile(forms.ModelForm):
 
-	class Meta(UserCreationForm.Meta):
-		model = User
+    # course = forms.ModelMultipleChoiceField(queryset=Course.objects.all(), widget=forms.CheckboxSelectMultiple)
 
-	#@transaction.atomic
-	def save(self, commit=True):
-		user = super().save(commit=False)
-		user.is_student = True
-		if commit:
-			user.save()
-		return user
+    is_super = forms.BooleanField(required=False)
 
-class StudentForm(forms.ModelForm):
-	SID = forms.CharField(max_length=128, help_text="Please enter the student ID.")
-	stu_name = forms.CharField(max_length=128, help_text="Please enter the student's name'.")
-	major = forms.CharField(max_length=128, help_text="Please enter the student's major.")
-	enroll_year = forms.CharField(max_length=128, help_text="Please enter the student's year of enrollment.")
-	graduate_year = forms.CharField(max_length=128, help_text="Please enter the student's year of graduation.")
-	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
+    class Meta:
+        model = Student
+        fields = ('first_name', 'last_name', 'email', 'module', 'country', 'city','picture', 'user','major', 'competency',)
 
-	class Meta:
-		model = Student
-		fields = ('SID','stu_name','major','enroll_year','graduate_year',)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user'].widget.attrs.update({'hidden': True})
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control', 'placeholder': 'First Name'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Last Name'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Email'})
+        self.fields['country'].widget.attrs.update({'class': 'form-control'})
+        self.fields['city'].widget.attrs.update({'class': 'form-control', 'placeholder': 'City'})
+        self.fields['module'].widget.attrs.update({'class': 'form-control'})
+        self.fields['major'].widget.attrs.update({'class': 'form-control'})
+        self.fields['competency'].widget.attrs.update({'class': 'full-width', 'required': False})
+
+
+# Sign up form
+class SignUpForm(forms.Form):
+    username = forms.CharField()
+    password1 = forms.CharField(widget = forms.PasswordInput())
+    password2 = forms.CharField(widget = forms.PasswordInput())
+    
+
+    def clean_username(self):
+        try:
+            User.objects.get(username__iexact=self.username)
+            raise forms.ValidationError('User already exists')
+        except User.DoesNotExist:
+            return self.username
+
+
+    def clean_password(self):
+        pw1 = self.cleaned_data.get('password1')
+        pw2 = self.cleaned_data.get('password2')
+
+        if pw1 and pw2 and pw1 == pw2:
+            return pw1
+        raise forms.ValidationError("Password doesn't match")
+
+
+# Select teachers for a specific competency
+class SelectAssessorsForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ('first_name', 'last_name', )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'] = forms.ModelMultipleChoiceField(queryset=Student.objects.all())
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
+
+
+class AddPostForm(forms.ModelForm):
+    class Meta:
+        model = New
+        fields = ('title', 'content', 'picture', )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs.update({'class': 'form-control'})
+        self.fields['content'].widget.attrs.update({'class': 'form-control'})
+        self.fields['picture'].widget.attrs.update({'class': 'form-control'})
+
+
+class RatingStudentsForm(forms.ModelForm):
+
+    # student = forms.ChoiceField(choices=[(s.pk, s.first_name + ' ' + s.last_name) for s in Student.objects.all()])
+
+    class Meta:
+        model = Rating
+        fields = ('student', 'rating', )
+
+    def __init__(self, *args, **kwargs):
+        super(RatingStudentsForm, self).__init__(*args, **kwargs)
+        # if course:
+            # self.fields['student'].widget = forms.ChoiceField(choices=[(s.pk, s.first_name) for s in Student.objects.all()])
+        # self.fields['student'].widget = forms.ChoiceField(queryset=Student.objects.values_list('pk', 'first_name'))
+        self.fields['student'].widget.attrs.update({'class': 'form-control'})
+        self.fields['rating'].widget.attrs.update({'class': 'form-control'})
+
+
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
+
+class CompetencyAddForm(forms.ModelForm):
+
+    class Meta:
+        model = Competency
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control'})
+        self.fields['module'].widget.attrs.update({'class': 'form-control'})
+        self.fields['group_name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['dimension_name'].widget.attrs.update({'class': 'form-control'})
+
+
 
 class ModuleForm(forms.ModelForm):
-	module_ID = forms.CharField(max_length=128, help_text="Please enter the module ID.")
-	mod_name = forms.CharField(max_length=128, help_text="Please enter the module's name'.")
-	#SID = forms.ModelChoiceField(queryset=Student.objects.all(), empty_label="Student ID")
-	SID = forms.CharField(max_length=128,help_text="Please enter the student ID.")
-	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
 
-	class Meta:
-		model = Student
-		exclude = ('slug',)
+    class Meta:
+        model = Module
+        fields = '__all__'
+        widgets = {
+            'start_date': DateInput(),
+            'end_date': DateInput()
+        }
 
-class AssessorForm(forms.ModelForm):
-	assessor_ID = forms.CharField(max_length=128, help_text="Please enter the assessor ID.")
-	ass_name = forms.CharField(max_length=128, help_text="Please enter the assessor's name'.")
-	module_ID = forms.CharField(max_length=128, help_text="Please enter the module ID.")
-	user_group = forms.CharField(max_length=128, help_text="Please enter the user group of assessor.")
-	institution = forms.CharField(max_length=128, help_text="Please enter the assessor's institution.")
-	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-
-	class Meta:
-		model = Student
-		exclude = ('slug',)
-
-
-class AssignmentForm(forms.ModelForm):
-	assignment_ID = forms.CharField(max_length=128, help_text="Please enter the assignment ID.")
-	#SID = forms.ModelChoiceField(queryset=Student.objects.all(), empty_label="Student ID")
-	title = forms.CharField(max_length=1280, help_text="Please enter the title of the assignment.")
-	description = forms.CharField(max_length=1280, help_text="Please enter the description of the assignment.")
-	text = forms.CharField(max_length=1280, help_text="Please enter the content of the assignment.")
-	create_time = forms.DateTimeField()
-	modify_time = forms.DateTimeField()
-	SID = forms.CharField(max_length=128,help_text="Please enter the module ID.")
-	module_ID = forms.CharField(max_length=128,help_text="Please enter the module ID.")
-	assessor_ID = forms.CharField(max_length=128,help_text="Please enter the assessor ID.")
-	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-	student_slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-	#image = forms.ImageField(required=False, help_text="Please upload the picture of the recipe." )
-
-	class Meta:
-		model = Assignment
-		exclude = ('assessor_ID','student_slug', 'slug',)
-
-
-class FeedbackForm(forms.ModelForm):
-	assignment_ID = forms.CharField(max_length=128, help_text="Please enter the assignment ID.")
-	#SID = forms.ModelChoiceField(queryset=Student.objects.all(), empty_label="Student ID")
-	feedback_ID = forms.CharField(max_length=128)
-	SID = forms.CharField(max_length=128,help_text="Please enter the student ID.")
-	module_ID = forms.CharField(max_length=128,help_text="Please enter the module ID.")
-	review_text = forms.CharField(max_length=1280, help_text="Please enter the content of the feedback.")
-	create_time = forms.DateTimeField()
-	modify_time = forms.DateTimeField()
-	assessor_ID = forms.CharField(max_length=128,help_text="Please enter the assessor ID.")
-	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-	assignment_slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-	assessor_slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-	#image = forms.ImageField(required=False, help_text="Please upload the picture of the recipe." )
-
-	class Meta:
-		model = Assignment
-		exclude = ('assignment_slug','assessor_slug', 'slug',)
-
-class CompetencyForm(forms.ModelForm):
-	competency_ID = forms.CharField(max_length=128, help_text="Please enter the competency ID.")
-	com_name = forms.CharField(max_length=128, help_text="Please enter the name of the competency.")
-	group_ID = forms.CharField(max_length=128, help_text="Please enter the group ID of the competency.")
-	group_name = forms.CharField(max_length=128, help_text="Please enter the group name of the competency.")
-	dimension_ID = forms.CharField(max_length=128, help_text="Please enter the dimension ID of the competency.")
-	dimension_name = forms.CharField(max_length=128, help_text="Please enter the dimension name of the competency.")
-	description = forms.CharField(max_length=1280, help_text="Please enter the description of the competency.")
-	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-
-	class Meta:
-		model = Student
-		exclude = ('slug',)
-
-class Student_compForm(forms.ModelForm):
-	name = forms.CharField(max_length=128, help_text="Please enter the name of the competency.")
-	SID = forms.ModelChoiceField(queryset=Student.objects.all(), empty_label="Student ID")
-	module_ID = forms.CharField(max_length=128, help_text="Please enter the module ID.")
-	semester = forms.CharField(max_length=1280, help_text="Please enter the semester.")
-	assignment_ID = forms.CharField(max_length=128, help_text="Please enter the assignment ID.")
-	feedback_ID = forms.CharField(max_length=128)
-	semester = forms.CharField(max_length=1280, help_text="Please enter the rating of the competency.")
-	slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-	student_slug = forms.CharField(widget=forms.HiddenInput(), required=False)
-
-	class Meta:
-		model = Student
-		exclude = ('slug', 'student_slug',)
-
-class ContactForm(forms.Form):
-	con_name = forms.CharField(max_length=100)
-	email = forms.EmailField()
-	message = forms.CharField(widget=forms.Textarea)
-
-'''
-class UserForm(forms.ModelForm):
-	password = forms.CharField(widget=forms.PasswordInput())
-
-	class Meta:
-		model = User
-		fields = ('username', 'email', 'password',)
-'''
-class ProfileForm(forms.ModelForm):
-	picture = forms.ImageField(required=False)
-
-	class Meta:
-		model = Profile
-		exclude = ('user',)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs.update({'class': 'form-control'})
+        self.fields['summary'].widget.attrs.update({'class': 'form-control'})
+        self.fields['level'].widget.attrs.update({'class': 'form-control'})
+        self.fields['year'].widget.attrs.update({'class': 'form-control'})
+        self.fields['semester'].widget.attrs.update({'class': 'form-control'})
+        self.fields['start_date'].widget.attrs.update({'class': 'form-control'})
+        self.fields['end_date'].widget.attrs.update({'class': 'form-control'})
+        #self.fields['competencies'].widget.attrs.update({'class': 'form-control'})

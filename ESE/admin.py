@@ -1,39 +1,21 @@
 from django.contrib import admin
-from ESE.models import Student, Assessor, Assignment, Feedback, Competency, Module, Student_comp, User, Profile
+from .models import Upload, Student, New, State, Rating, Module, Competency
 
-class StudentAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('SID',)}
-    list_display = ('stu_name', 'SID', 'major', 'enroll_year', 'graduate_year' )
+class UploadAdmin(admin.ModelAdmin):
+    list_display = ('name', 'competency', 'file')
 
-class AssessorAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('assessor_ID',)}
-    list_display = ('ass_name', 'assessor_ID', 'user_group', 'institution' )
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ('student', 'competency', 'rating', )
 
-class AssignmentAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('assignment_ID',), 'student_slug': ('SID',)} 
-    list_display = ('owner','SID','title','assignment_ID', 'module_ID', 'description','text')
+class RegisteredModuleAdmin(admin.ModelAdmin):
+	list_display = ('user', 'module', 'competency', 'registered', 'featured', )
 
-class FeedbackAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('feedback_ID',), 'assignment_slug': ('assignment_ID',),'assessor_slug': ('assessor_ID',)}
-    list_display = ('feedback_ID', 'assessor_ID', 'review_text')
 
-class ModuleAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('mod_name',)}
-    list_display = ('module_ID', 'mod_name', 'SID')
-
-class CompetencyAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('com_name',)}
-    list_display = ('group_name','dimension_name', 'com_name', 'description')
-
-class StudentcompAdmin(admin.ModelAdmin):
-    prepopulated_fields = {'slug': ('name',), 'student_slug': ('SID',)} 
-    list_display = ('name','SID','semester','rating')
-
-admin.site.register(Student, StudentAdmin)
-admin.site.register(Assessor, AssessorAdmin)
-admin.site.register(Assignment, AssignmentAdmin)
-admin.site.register(Feedback, FeedbackAdmin)
-admin.site.register(Competency,CompetencyAdmin)
-admin.site.register(Student_comp, StudentcompAdmin)
-admin.site.register(Module, ModuleAdmin)
-admin.site.register(Profile)
+# admin.site.register(RegisteredCourse, RegisteredCourseAdmin)
+admin.site.register(Rating, RatingAdmin)
+admin.site.register(New)
+admin.site.register(Student)
+admin.site.register(Competency)
+admin.site.register(Module)
+admin.site.register(Upload, UploadAdmin)
+admin.site.register(State)
