@@ -140,6 +140,7 @@ class Rating(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, blank=True, null=True)
     competency = models.ForeignKey(Competency, on_delete=models.CASCADE,blank=True, null=True)
     rating = models.IntegerField(choices=RATING, default=0)
+    feedback = models.TextField(max_length=6000, null=True, blank=True)
 
     def __str__(self):
         return self.student.student.first_name + ' ' + self.student.student.last_name

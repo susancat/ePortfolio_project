@@ -18,7 +18,8 @@
                 {% for rating in success %}
                 <tr>
                     <td>{{ rating.competency }}</td>
-                    <td>{% if rating.rating >= 2 %}{{ rating.rating }}{% else %}&mdash;{% endif %}</td>
+                    <td>{% if rating.rating >= 0 %}{{ rating.rating }}{% else %}&mdash;{% endif %}</td>
+                    <td><a onclick="toggleFeedbacks()" class="toggleBtn btn btn-primary">view the comments</a></td>
                 </tr>
                 {% endfor %}
                 {% else %}
@@ -32,6 +33,7 @@
     </div>
 </div>
 {% endif %}
+
 
 <div class="container">
     <div class="row">
@@ -107,6 +109,7 @@
         <div class="col-md-4 col-xs-12">
             <div class="card-box">
                 <h6>Overview</h6>
+                <small class="faded">0 = 'Not Demontrated'; 1 = 'Weak'; 2 = 'Strong'.</small>
                 <table>
                     <tbody>
                         <tr>
@@ -127,6 +130,33 @@
         </div>
     </div>
 </div>
+
+{% if user.is_superuser or user.student == student %}
+<div class="com-popup" style="visibility:hidden" id="popUp">
+        <div class="no-shade card-box grades" >
+            <a onclick="toggleFeedbacks()" class="toggleBtn btn btn-danger"><i class="fas fa-times"></i> Close</a><br><br>
+            <table>
+                <thead>
+                    <th>Comments</th>
+                </thead>
+                <tbody>
+                    {% if success %}
+                    {% for rating in success %}
+                    <tr>
+                        <td>{{ rating.feedback }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                        <td>Empty dataset</td>
+                        <td></td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table><br>
+        </div>
+    </div>
+{% endif %}
 {% endblock %}
 
 
@@ -134,7 +164,7 @@
 <script>
     var visible = false;
     var collapsed = true;
-
+    
     function toggleRatings() {
         if (visible) {
             $('.abs-popup').hide()
@@ -145,9 +175,17 @@
         visible = !visible;
     }
 
+    function toggleFeedbacks() {
+        if (visible) {
+            popUp.style.visibility = "hidden";
+        } else {
+            popUp.style.visibility = "visible";
+        }
+        visible = !visible;
+    }
+
     function showCompetencies(btn) {
         var btn = $(btn);
-
         if (collapsed) {
             btn.html("Collapse <i class=\"fas fa-angle-up\"></i>");
             $(".hide").css("max-height", "unset");

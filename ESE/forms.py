@@ -92,7 +92,7 @@ class RatingStudentsForm(forms.ModelForm):
 
     class Meta:
         model = Rating
-        fields = ('student', 'rating', )
+        fields = ('student', 'rating', 'feedback',)
 
     def __init__(self, *args, **kwargs):
         super(RatingStudentsForm, self).__init__(*args, **kwargs)
@@ -101,7 +101,7 @@ class RatingStudentsForm(forms.ModelForm):
         # self.fields['student'].widget = forms.ChoiceField(queryset=Student.objects.values_list('pk', 'first_name'))
         self.fields['student'].widget.attrs.update({'class': 'form-control'})
         self.fields['rating'].widget.attrs.update({'class': 'form-control'})
-
+        self.fields['feedback'].widget.attrs.update({'class': 'form-control'})
 
 
 class DateInput(forms.DateInput):
