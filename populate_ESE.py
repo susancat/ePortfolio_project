@@ -1,3 +1,4 @@
+     
 
 import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ePortfolio_project.settings')
@@ -7,35 +8,13 @@ django.setup()
 from ESE.models import Module, Competency, User, Student, Rating
 
 def populate(): 
-        programming = add_module( "Programming", "python and java, for year-1 students",
-                "2018-09-17", "2018-12-20",  year=1, semester=2, level=1)
+    
+        programming =[
+                {"name":"Programming", "summary":"python and java, for year-1 students",
+                "start_date":"2018-09-17", 
+                "end_date":"2018-12-20",  
+                "year":1, "semester":2, "level":1}]
         
-        add_competencies()
-        software_engineering =[
-                {"name": "Software Engineering", 
-                "summary": "for year-2 students",
-                "start_date": "2018-09-17",
-                "end_date": "2018-12-20",
-                "year": 2,
-                "semester":3,
-                "level": 1}]
-        software_project_management =[
-                {"name": "Software Project Management", 
-                "summary": "for year-3 students",
-                "start_date": "2018-01-17",
-                "end_date": "2018-04-20",
-                "year": 3,
-                "semester":6,
-                "level": 1}]
-        human_computer_interaction =[
-                {"name": "Human Computer Interaction", 
-                "summary": "for year-4 students",
-                "start_date": "2018-09-17",
-                "end_date": "2018-12-20",
-                "year": 4,
-                "semester":7,
-                "level": 1}]
-
         programming_comp =[
                 {"name": "Programming", "description": "python and java",
                 "module": "Programming",
@@ -70,6 +49,15 @@ def populate():
                 "group_name": "Personals",
                 "dimension_name": "Rights and limits"}]
 
+        software_engineering =[
+                    {"name": "Software Engineering", 
+                    "summary": "for year-2 students",
+                    "start_date": "2018-09-17",
+                    "end_date": "2018-12-20",
+                    "year": 2,
+                    "semester":3,
+                    "level": 1}]
+
         software_engineering_comp = [
                 {"name": "Software design", "description": "design pattern and diagrams",
                 "module": "Software Engineering",
@@ -103,7 +91,16 @@ def populate():
                 "module": "Software Engineering",
                 "group_name": "Personals",
                 "dimension_name": "Rights and limits"}]
-        
+
+        software_project_management =[
+                {"name": "Software Project Management", 
+                "summary": "for year-3 students",
+                "start_date": "2018-01-17",
+                "end_date": "2018-04-20",
+                "year": 3,
+                "semester":6,
+                "level": 1}]
+
         software_project_management_comp = [
                 {"name": "Project management", "description": "design pattern and diagrams",
                 "module": "Software Project Management",
@@ -137,6 +134,15 @@ def populate():
                 "module": "Software Project Management",
                 "group_name": "Personals",
                 "dimension_name": "Rights and limits"}]
+
+        human_computer_interaction =[
+                {"name": "Human Computer Interaction", 
+                "summary": "for year-4 students",
+                "start_date": "2018-09-17",
+                "end_date": "2018-12-20",
+                "year": 4,
+                "semester":7,
+                "level": 1}]
 
         human_computer_interaction_comp = [
                 {"name": "Requirement analysis", "description": "design pattern and diagrams",
@@ -172,26 +178,30 @@ def populate():
                 "group_name": "Personals",
                 "dimension_name": "Rights and limits"}]
 
-'''
         Modules = {"Human Computer Interaction": {"competencies": human_computer_interaction_comp},
-                        "Software Project Management": {"competencies": software_project_management_comp},
-                        "Software Engineering": {"competencies": software_engineering_comp},
-                        "Programming": {"competencies": programming_comp}} 
-'''
+                            "Software Project Management": {"competencies": software_project_management_comp},
+                            "Software Engineering": {"competencies": software_engineering_comp},
+                            "Programming": {"competencies": programming_comp}} 
         
+        for mod, mod_data in Modules.items():
+                m = add_module(mod)
+                for c in mod_data["competencies"]:
+                        add_competency(c["name"], c["description"], m, c["group_name"], c["dimension_name"])
         for m in Module.objects.all():
                 for c in Competency.objects.filter(module=m):
-                      print("- {0} - {1}".format(str(m), str(c))  
+                       print("- {0} - {1}".format(str(m),str(c)))
+
+
+def add_competency(name, description, module, group_name, dimension_name):
+        c = Competency.objects.get_or_create(name=name, description = description, module=module, group_name = group_name,dimension_name = dimension_name)
+        c.save()
+        return c
 
 def add_module(name,summary,start_date,end_date,year,semester,level):
         m = Module.objects.get_or_create(name=name,summary = summary,start_date = start_date,end_date = end_date,year = year,semester = semester,level = level)
-        #m.save()
+        m.save()
         return m
 
-def add_competencies(name, description, module, group_name, dimension_name):
-        c = Competency.objects.get_or_create(name=name, module=module,description = description,group_name = group_name,dimension_name = dimension_name)
-        #c.save()
-        return c
 
 if __name__=='__main__':
         print("Starting breakfast population script...")
