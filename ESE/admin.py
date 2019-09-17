@@ -5,7 +5,7 @@ class UploadAdmin(admin.ModelAdmin):
     list_display = ('name', 'competency', 'file')
 
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('student', 'competency', 'rating', )
+    list_display = ('student', 'competency', 'rating', 'feedback')
 
 class RegisteredModuleAdmin(admin.ModelAdmin):
 	list_display = ('user', 'module', 'competency', 'registered', 'featured', )

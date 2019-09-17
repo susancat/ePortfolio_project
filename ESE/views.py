@@ -16,8 +16,6 @@ from django import forms
 from django.template.defaulttags import register
 
 
-max_paraqit = 3
-
 @register.filter
 def toInt(value):
     return int(value)
@@ -99,8 +97,8 @@ def module_edit(request, pk):
 
 def module_detail(request, pk):
     module = Module.objects.get(pk=pk)
-    competencies = Competency.objects.filter(id=pk)
-    # credits = Course.objects.aggregate(Sum('credits'))
+    competencies = Competency.objects.filter(module__id=pk)
+    students = Student.objects.filter(module__id=pk)
 
     paginator = Paginator(competencies, 10)
     page = request.GET.get('page')
@@ -111,7 +109,7 @@ def module_detail(request, pk):
         return render(
             request,
             'module_single.html',
-            {'module': module, 'competencies': competencies},
+            {'module': module, 'competencies': competencies,'students':students},
         )# here used to be 'credits':credits, see later if we need to add rating here
     else: 
         return redirect('login')
@@ -514,162 +512,3 @@ def rating_students(request, competency_id):
     return render (
         request, 'rating_students.html', {'formset': formset, 'competency': competency},
     )
-
-# ########################################################
-
-'''
-in user-edit
-for m in modules:
-    competency = Competency()
-    usr = User.objects.get(pk=request.POST.get('user'))
-    mod = Module.objects.get(pk=m)
-    if not Competency.objects.filter(module=mod, student=usr).exists():
-        competency.student = usr
-        competency.competency = 0
-        competency.module = mod
-        competency.save()
-
-existing_modules = list(Student.objects.values_list('module', flat=True).filter(pk=pk))
-    
-for m in existing_modules:
-    if str(m) not in modules:
-        Competency.objects.filter(student=User.objects.get(pk=request.POST.get('user')), module=m).delete()
-                        
-
-def year_add(request):
-
-    if request.method == 'POST':
-        form = LendetForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('current_years')
-    else:
-        form = LendetForm()
-
-    return render (
-        request, 'year_add.html', {'form': form}, 
-    )
-
-
-def year_edit(request, pk):
-    current = ProvimetMundshme.objects.get(pk=pk)
-    courses = ProvimetMundshme.objects.values_list('course', flat=True).filter(pk=pk)
-
-    if request.method == 'POST':
-        form = LendetForm(request.POST, instance=current)
-        if form.is_valid():
-            form.save()
-            return redirect('current_years')
-    else:
-        form = LendetForm(instance=current, initial={'course': list(courses)})
-
-    return render (
-        request, 'year_add.html', {'form': form}, 
-    )
-
-
-def register_courses(request):
-    pass
-
-
-def register_course(request, pk, max_reached):
-    if not max_reached:
-        regs = RegisteredCourse()
-        regs.user = request.user
-        regs.program = request.user.student.program
-        regs.course = Course.objects.get(pk=pk)
-        regs.registered = True
-        regs.featured = False
-
-        regs.save()
-
-    return redirect('register_courses')
-
-
-
-# ADMIN
-def admin_view(request, afat_extra):
-
-    if not afat_extra:
-        afat_extra = 0
-
-    queryset = afatet_provimeve.objects.all()
-    AfatetFormSet = forms.modelformset_factory(afatet_provimeve, form=AfatetForm, extra=afat_extra)
-
-    if request.method == 'POST':
-        formset = AfatetFormSet(request.POST, queryset=queryset)
-        if formset.is_valid():
-            for instance in formset.forms:
-                if instance.cleaned_data.get('emri'):
-                    instance.save()
-            return redirect('administrator', afat_extra=0)
-        else: 
-            print(formset.errors)
-    else:
-        formset = AfatetFormSet(queryset=queryset)
-
-    return render (
-        request, 'admin_panel.html', {'formset': formset, 'extra': afat_extra},
-    )
-
-
-def delete_afat(request, pk):
-    afati = get_object_or_404(afatet_provimeve, pk=pk)
-    afati.delete()
-
-    return redirect('administrator', afat_extra=0)
-
-
-def paraqit_provimet(request):
-    provimetList = list()
-    courses = None
-    provimet = None
-    afatet = afatet_provimeve.objects.filter(aktiv=True)
-    afatetAll = afatet_provimeve.objects.all()
-    program = request.user.student.program
-
-    if request.method == 'GET':
-        if request.GET.get('filter'):
-            year = int(request.GET.get('year'))
-            semester = int(request.GET.get('semester'))
-            if int(request.GET.get('afati')) > -1:
-                afati = get_object_or_404(afatet_provimeve, pk=int(request.GET.get('afati')))
-                provimetList = list(Provimet.objects.values_list('course', flat=True).filter(student=request.user, afati=afati))
-
-            courses = Course.objects.filter(program=program, year=year, semester=semester).exclude(pk__in=provimetList).annotate(hera=Count('pk'))
-
-    return render (
-        request, 'paraqit_provimet.html', {'program': program, 'courses': courses, 'provimet': provimet, 'afatet': afatet, 'afatetAll': afatetAll}, 
-    )
-
-
-def provimet_paraqitura(request):
-    afatetAll = afatet_provimeve.objects.all()
-    program = request.user.student.program
-    provimet = None;
-
-    if request.method == 'GET':
-        if request.GET.get('filterProvimet'):
-            if int(request.GET.get('afati')) >= 0:
-                provimet = Provimet.objects.filter(student=request.user, afati=int(request.GET.get('afati')))
-
-    # for p in Provimet.objects.raw('select "sems_provimet"."id", "sems_provimet"."course_id", count("sems_provimet"."course_id") as hera from "sems_provimet" group by "sems_provimet"."course_id"'):
-    #     print(Course.objects.get(pk=p.course_id), p.hera)
-
-    return render (
-        request, 'provimet_paraqitura.html', {'program': program, 'provimet': provimet, 'afatetAll': afatetAll}, 
-    )
-
-
-def paraqit_provimin(request, c_pk, a_pk):
-    course = Course.objects.get(pk=c_pk)
-    provimet = Provimet()
-    provimet.course = course
-    provimet.student = request.user
-    provimet.afati = afatet_provimeve.objects.get(pk=a_pk)
-    provimet.time = datetime.now()
-    provimet.refuzuar = False
-    provimet.save()
-
-    return redirect('provimet')
-'''

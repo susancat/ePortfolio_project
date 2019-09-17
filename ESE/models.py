@@ -59,8 +59,8 @@ LEVELS = (
 class Module(models.Model):
     name = models.CharField(max_length=150)
     summary = models.TextField(null=True, blank=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     year = models.IntegerField(choices=YEARS, default=1)
     semester = models.IntegerField(choices=SEMESTER, default=1)
     level = models.CharField(max_length=100, choices=LEVELS, default='Bachelor')
@@ -93,13 +93,12 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
-    #SID = models.CharField(max_length=128, unique=True)
     picture = models.ImageField(null=True, blank=True, default='no-img.png')
     email = models.EmailField(max_length=100, null=True)
     major = models.CharField(max_length=100, null=True)
     country = models.ForeignKey(State, on_delete=models.SET_NULL, null=True)
     city = models.CharField(max_length=100, null=True)
-    module = models.ManyToManyField(Module, related_name='module', blank=True)
+    module = models.ManyToManyField(Module, related_name='students', blank=True)
     assessor = models.ManyToManyField(Competency, related_name='assessor', blank=True)
     year = models.IntegerField(choices=YEARS, default=1)
     competency = models.ManyToManyField(Competency, related_name='competency', blank=True)
@@ -140,6 +139,7 @@ class Rating(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE, blank=True, null=True)
     competency = models.ForeignKey(Competency, on_delete=models.CASCADE,blank=True, null=True)
     rating = models.IntegerField(choices=RATING, default=0)
+    feedback = models.TextField(max_length=6000, null=True, blank=True)
 
     def __str__(self):
         return self.student.student.first_name + ' ' + self.student.student.last_name
