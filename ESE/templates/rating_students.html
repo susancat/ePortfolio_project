@@ -7,12 +7,15 @@
                     <h6>{{ competency }}</h6> {% csrf_token %} {{ formset.management_form }} {% if formset|length > 0 %} {% for form in formset %}
                     <div class="row justify-content-start border-bottom input-styled">
                         {{ form.id }}
-                        <label class="col-md-8 col-6">
+                        <label class="col-md-6 col-6">
                             {{ form.student }}
                         </label>
                         <label class="col-md-4 col-6">
                             {{ form.rating }}
                         </label>
+                        <div class="form-group col-md-10 col-xs-12">
+                            <span class="faded">Comment</span> {{ form.feedback }}
+                        </div>
                     </div>
                     {% endfor %} {% else %}
                     <p class="text-danger">No students</p>
